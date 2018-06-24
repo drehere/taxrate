@@ -1,0 +1,109 @@
+/* pages/main/main.wxss */
+
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.usermotto {
+  margin-top: 200px;
+}
+
+.scroll-container {
+  height: 1000rpx;
+  background: #aaa;
+  padding: 50rpx 0;
+}
+
+.scroll-container form {
+  margin: 0 50rpx;
+  display: block;
+}
+
+.form-container {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form-container view {
+  flex-direction: row;
+  display: flex;
+  background: #fff;
+  height: 100rpx;
+  width: 100%;
+  flex-flow:row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.form-container view label{
+  order: 0;
+  width: 250rpx;
+  text-align: right;
+  margin-right: 20rpx;
+}
+.form-container view input{
+  border-color: red;
+  border-style: solid;
+  border-width: 2rpx;
+  flex-shrink:1;
+  margin-right: 20rpx;
+}
+.form-container view input:focus{
+  border-color: black;
+  border-style: solid;
+  border-width: 2rpx;
+}
+.form-container view button{
+  width: 50%;
+  margin: 0 20rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 15px;
+  text-align: center;
+}
+
+/*result css*/
+
+.result-container{
+  background-color: #fff;
+  margin: 40rpx;
+  padding: 20rpx 0;
+  display: block;  
+}
+.result-item{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.result-item label{
+  font-size: 15px;
+  text-align: right;
+  flex-grow:1;
+}
+.result-item text{
+  font-size: 15px;
+  margin-left: 20rpx;
+  width: 50%;
+}
+.result-desc{
+  font-size: 15px;
+  text-align: center
+}
+.result{
+  margin: 100rpx;
+  background-color: #fff; 
+}

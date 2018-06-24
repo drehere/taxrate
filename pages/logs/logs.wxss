@@ -1,6 +1,5 @@
 .log-list {
-  display: flex;
-  flex-direction: column;
+  display: block;
   padding: 40rpx;
 }
 .log-item {

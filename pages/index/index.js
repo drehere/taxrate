@@ -1,54 +1,120 @@
-//index.js
-//获取应用实例
-const app = getApp()
+const server = require('../../server/server.js')
 
 Page({
+  /**
+   * 页面的初始数据
+   */
   data: {
-    motto: 'Hello World',
-    userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+
   },
-  //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
-  },
-  onLoad: function () {
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse){
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
+  login: function() {
+    wx.login({
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        console.log(res)
+        server.login({
+          data: {
+            code: res.code
+          },
+          success: (data) => {
+
+            wx.setStorageSync("wxLoginInfo", data)
+            getApp().globalData.wxLoginInfo = data
+            this.toMain()
+
+          },
+          fail: () => {
+            this.toLoginError()
+          }
         })
+      },
+      fail: () => {
+        console.log("wx.login error")
+        this.toLoginError()
       }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
-      })
-    }
-  },
-  getUserInfo: function(e) {
-    console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
     })
+  },
+  toLoginError: function() {
+    wx.hideLoading()
+    wx.showToast({
+      title: 'sorry,无法使用哦',
+    })
+  },
+  toMain: function() {
+    wx.hideLoading()
+    wx.switchTab({
+      url: '../main/main',
+    })
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function(options) {
+    wx.checkSession({
+      success: () => {
+        let wxLoginInfo = wx.getStorageSync('wxLoginInfo')
+        if (wxLoginInfo == null || wxLoginInfo == '') {
+          this.login()
+        } else {
+          getApp().globalData.wxLoginInfo = wxLoginInfo //JSON.parse(wxLoginInfo);
+          this.toMain();
+        }
+      },
+      fail: () => {
+        this.login()
+      }
+    })
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function() {
+    wx.showLoading({
+      title: '登陆中，请稍后',
+    })
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function() {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function() {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function() {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function() {
+
   }
 })

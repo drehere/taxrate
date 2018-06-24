@@ -1,0 +1,66 @@
+<!--main.wxml-->
+<view class="container">
+
+  <scroll-view class='scroll-container' scroll-y="true">
+    <form bindsubmit='onSubmit' bindreset='onReset'>
+      <view class='form-container'>
+        <view class='form-item'>
+          <label>税前工资:</label>
+          <input value='{{grossPay}}' type='number' name='grossPay' placeholder='请输入税前工资'></input>
+        </view>
+        <view class='form-item'>
+          <label>保险费用:</label>
+          <input value='{{fee}}' type='number' name='fee' placeholder='请输入各项保险费用'></input>
+        </view>
+        <view class='form-item'>
+          <label>起征点:</label>
+          <input value='{{threshold}}' type='number' name='threshold' placeholder='请输入起征点'></input>
+        </view>
+
+        <view class='form-item'>
+          <button form-type='submit' type='primary' loading='{{btnSubloading}}'> 计算</button>
+          <button form-type='reset' type='primary'> 重置条件</button>
+        </view>
+      </view>
+
+
+    </form>
+    <block wx:if="{{canIUseUserInfo}}">
+      <button wx:if='{{!hasUserInfo}}' type='primary' open-type='getUserInfo' style='margin:40rpx' bindgetuserinfo='onUserInfoReady'>
+        获取用户信息
+      </button>
+    </block>
+    <block wx:if="{{showResult}}">
+      <view class="result-container">
+        <view class='result-item'>
+          <label>扣税:</label>
+          <text>{{finalTax}}</text>
+        </view>
+         <view class='result-item'>
+          <label>税后收入:</label>
+          <text>{{realSalary}}</text>
+          </view>
+        <!-- <button  type='primary' open-type='share' style='margin:40rpx'>
+        分享出去吧，你的个税节省出一个肯德基
+      </button> -->
+        <view class='result-desc'>{{resultDesc}}</view>
+        <button type='primary' open-type='share'>分享出去吧
+        </button>
+      </view>
+    </block>
+  </scroll-view>
+
+
+  <!--
+  <view class="userinfo">
+    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+    <block wx:else>
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    </block>
+  </view>
+  <view class="usermotto">
+    <text class="user-motto">{{motto}}</text>
+  </view>
+  -->
+</view>
