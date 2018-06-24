@@ -1,14 +1,13 @@
 //app.js
+
+const logger=require('./config/log.js')
 App({
   
   onLaunch: function(res) {
     // 展示本地存储能力
-    let app = this;
+    let app = this
     // 登录
-    console.log("app.js onLaunch",res)
-
-    
-
+    logger.console('App onLaunch',res)
   },
   globalData: {
     wxLoginInfo: null,

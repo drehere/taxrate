@@ -1,7 +1,22 @@
+.log-container{
+  width: 100%;
+  padding: 0;
+}
 .log-list {
-  display: block;
+  display: flex;
   padding: 40rpx;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
 }
 .log-item {
   margin: 10rpx;
+  display: block;
+  overflow-wrap: break-word;
+}
+.log-clear{
+  position: fixed;
+  bottom: 100px;
+  left: 20px;
 }

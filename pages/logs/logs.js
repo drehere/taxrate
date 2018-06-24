@@ -12,6 +12,12 @@ Page({
       })
     })
   },
+  onClearClick:function(){
+    logger.clear()
+    this.setData({
+      logs:[]
+    })
+  },
   onShow:function(){
     this.setData({
       logs: (logger.logs()).map(log => {

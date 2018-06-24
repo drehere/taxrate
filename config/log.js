@@ -13,4 +13,5 @@ logger.console = function (...args){
   console.log(args)
 }
 logger.logs=()=> wx.getStorageSync("logs") || []
+logger.clear=()=> wx.setStorageSync('logs', [])
 module.exports=logger

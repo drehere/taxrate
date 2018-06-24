@@ -179,9 +179,9 @@ Page({
     console.info('onShareAppMessage ',options)
     return {
       title: '个税大比拼',
-      path : '/page/main',
+      path : '/pages/index/index',
       success:function(res){
-        console.info("onShareAppMessage success",res)
+        logger.console('onShareAppMessage success',res)
       }
     }
   },
