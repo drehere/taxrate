@@ -7,30 +7,39 @@ const logger=require('../../config/log.js')
 
 Page({
   data: {
-    canIUseUserInfo: wx.canIUse('button.open-type.getUserInfo'),
-    motto: 'Hello World',
-    hasUserInfo: false,
-    wxLoginUserInfo: null,
 
+    canIUseUserInfo: wx.canIUse('button.open-type.getUserInfo'),
+    hasUserInfo: false,
+    wxLoginUserInfo:null,
 
     //表单mvvm数据绑定
     btnSubloading: false,
     grossPay: 40000,
     fee: 5000,
     threshold: 5000,
-    
+    showRankBtn: getApp().context.isFromGroupWithShareTicket(),
 
     //计算结果数据绑定
-    showResult: false,
-    finalTax:0,
-    realSalary:0,
-    resultDesc:null
+    showShare: false,
+    finalTax:'',
+    realSalary:'',
+    resultDesc:'',
+
+    //排行榜数据
+    rankUsers:[]
+
   },
 
-  //视图绑定的回调函数
+  // 计算税率
   onSubmit: function(obj) {
+
+    
+
     let page = this;
     let value = obj.detail.value;
+
+    if(value)
+
     this.setData({
       btnSubloading: true
     })
@@ -43,20 +52,16 @@ Page({
       },
       success:(res)=>{
         this.setData({
-          showResult: true,
-          finalTax:res['result'],
+          showShare: true,
+          finalTax:res['tax'],
           realSalary: res['realSalary'],
           resultDesc: res['resultDesc']
         })
         logger.console('calculate success ',res)
       },
-      fail:(res)=>{
-
-      },
       complete:()=>{
         this.setData({
-          btnSubloading: false,
-         
+          btnSubloading: false
         })
       }
   
@@ -64,61 +69,60 @@ Page({
   },
   onReset: function() {
     this.setData({
-      grossPay: 0,
-      fee: 0,
+      grossPay: '',
+      fee: '',
       threshold: 5000
     })
   },
-
   
-  uploadUserInfo: function(encryptedData, iv) {
+
+  onToRankList:function(){
+    wx.navigateTo({
+      url:'../rank/rank'
+    })
+  },
+  
+  /**
+   * 上传微信用户详细数据
+   */
+  uploadUserInfo: function(encryptedData, iv,userInfo) {
     server.registerInfo({
       data: {
         encryptedData: encryptedData,
         iv: iv
       },
       success: (res) => {
-        this.setData({
-          hasUserInfo: true,
-          wxLoginUserInfo: app.globalData.wxLoginInfo
-        })
-        wx.setStorageSync('wxLoginInfo', app.globalData.wxLoginInfo)
+        this.onLoadUserInfoReady()
+        let wxUserInfo = getApp().context.getLoginInfo()
+        wxUserInfo['nickName'] = userInfo['nickName']
+        wxUserInfo['avatarUrl'] = userInfo['avatarUrl']
+        wxUserInfo['city'] = userInfo['city']
+        wxUserInfo['country'] = userInfo['country']
+        wxUserInfo['gender'] = userInfo['gender']
+        wxUserInfo['province'] = userInfo['province']
+        getApp().context.syncToLocal()
       },
-      fail: (res) => {
-        log.str
+      fail: () => {
+        logger.console("registerInfo fail")
       }
     })
   },
-  onReqUserInfoReady: function(res) {
-    logger.console(res)
-    let wxUserInfo = getApp().globalData.wxLoginInfo
-    let userInfo = res['detail'].userInfo
-    wxUserInfo['nickName'] = userInfo['nickName']
-    wxUserInfo['avatarUrl'] = userInfo['avatarUrl']
-    wxUserInfo['city'] = userInfo['city']
-    wxUserInfo['country'] = userInfo['country']
-    wxUserInfo['gender'] = userInfo['gender']
-    wxUserInfo['province'] = userInfo['province']
-    this.uploadUserInfo(res['detail']['encryptedData'], res['detail']['iv'])
-  },
-  onLoadUserInfoReady: function() {
+  onLoadUserInfoReady: function (wxLoginInfo) {
     this.setData({
       hasUserInfo: true,
-      wxLoginUserInfo: app.globalData.wxLoginInfo
+      wxLoginUserInfo: wxLoginInfo
     })
   },
-  checkLogin: function() {
-    return app.globalData.isWxLogin()
-  },
+  /**
+   * 检查是否需要获取用户详细数据
+   */
   checkDetailInfo: function() {
-    return app.globalData.hasWxLoginInfo()
+    return app.context.needUploadLoginInfo()
   },
+
   onLoad: function() {
-    if (!this.checkLogin()) {
-      return;
-    }
     if (this.checkDetailInfo()) {
-      this.onLoadUserInfoReady()
+      this.onLoadUserInfoReady(app.context.getLoginInfo())
     } else if (this.data.canIUseUserInfo) {
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 callback 以防止这种情况
@@ -133,7 +137,6 @@ Page({
         }
       })
     }
-
     wx.showShareMenu({
       withShareTicket:true,
       success:function(){
@@ -145,12 +148,12 @@ Page({
     })
 
   },
+  /**
+   * 授权获取用户信息回调
+   */
   onUserInfoReady: function(res) {
-    this.onReqUserInfoReady(res)
-  },
-
-  onShareClick:function(res){
-    
+    logger.console(res)
+    this.uploadUserInfo(res['detail']['encryptedData'], res['detail']['iv'], res['detail'].userInfo)
   },
 
   /**
@@ -182,6 +185,16 @@ Page({
       path : '/pages/index/index',
       success:function(res){
         logger.console('onShareAppMessage success',res)
+        if (res['shareTickets'] != null && res['shareTickets'].length>0){
+          let ticket = res['shareTickets'][0]
+          wx.getShareInfo({
+            shareTicket: ticket,
+            success:function(res){
+              logger.console("getShareInfo success",res)
+              getApp().context.uploadShareInfo(res)
+            }
+          })
+        }
       }
     }
   },

@@ -1,27 +1,20 @@
 const server = require('../../server/server.js')
-
+const logger = require('../../config/log.js')
 Page({
-  /**
-   * 页面的初始数据
-   */
-  data: {
-
-  },
+  //index
   login: function() {
     wx.login({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        console.log(res)
+        logger.console("wx.login", res)
         server.login({
           data: {
             code: res.code
           },
           success: (data) => {
-
-            wx.setStorageSync("wxLoginInfo", data)
-            getApp().globalData.wxLoginInfo = data
-            this.toMain()
-
+            //getApp().globalData.wxLoginInfo = data
+            logger.console(" server.login success", data)
+            this.toMain(data)
           },
           fail: () => {
             this.toLoginError()
@@ -40,25 +33,59 @@ Page({
       title: 'sorry,无法使用哦',
     })
   },
-  toMain: function() {
-    wx.hideLoading()
-    wx.switchTab({
-      url: '../main/main',
-    })
+  toMain: function(data) {
+    //如果有shareticket，获取下分享的数据下，在跳转
+    let app = getApp()
+    app.context.performLogin(data)
+    if (app.context.shareTicket != null) {
+      wx.getShareInfo({
+        shareTicket: app.context.shareTicket,
+        success: function(res) {
+          logger.console("getShareInfo success", res)
+          server.uploadShareInfo({
+            data: {
+              iv: res['iv'],
+              encryptedData: res['encryptedData'],
+            },
+            success: function(data) {
+              logger.console("uploadShareInfo success ", data)
+              app.context.groupID = data['groupID']
+            },
+            complete: function() {
+              wx.hideLoading()
+              wx.switchTab({
+                url: '../main/main',
+              })
+            }
+          })
+        },
+        fail: function() {
+          wx.hideLoading()
+          wx.switchTab({
+            url: '../main/main',
+          })
+        }
+      })
+    }else{
+      wx.hideLoading()
+      wx.switchTab({
+        url: '../main/main',
+      })
+    }
   },
 
   /**
-   * 生命周期函数--监听页面加载
+   * 初始化
    */
   onLoad: function(options) {
+    //判断登陆状态。
     wx.checkSession({
       success: () => {
-        let wxLoginInfo = wx.getStorageSync('wxLoginInfo')
-        if (wxLoginInfo == null || wxLoginInfo == '') {
+        let wxLoginInfo = getApp().context.getLoginInfo()
+        if (wxLoginInfo == null) {
           this.login()
         } else {
-          getApp().globalData.wxLoginInfo = wxLoginInfo //JSON.parse(wxLoginInfo);
-          this.toMain();
+          this.toMain(wxLoginInfo);
         }
       },
       fail: () => {

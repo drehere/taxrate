@@ -10,7 +10,7 @@ logger.console = function (...args){
 
   }).join(" "))
   wx.setStorageSync('logs', log)
-  console.log(args)
+  console.log(...args)
 }
 logger.logs=()=> wx.getStorageSync("logs") || []
 logger.clear=()=> wx.setStorageSync('logs', [])

@@ -2,25 +2,29 @@
 <view class="container">
 
   <scroll-view class='scroll-container' scroll-y="true">
-    <form bindsubmit='onSubmit' bindreset='onReset'>
-      <view class='form-container'>
-        <view class='form-item'>
-          <label>税前工资:</label>
-          <input value='{{grossPay}}' type='number' name='grossPay' placeholder='请输入税前工资'></input>
-        </view>
-        <view class='form-item'>
-          <label>保险费用:</label>
-          <input value='{{fee}}' type='number' name='fee' placeholder='请输入各项保险费用'></input>
-        </view>
-        <view class='form-item'>
-          <label>起征点:</label>
-          <input value='{{threshold}}' type='number' name='threshold' placeholder='请输入起征点'></input>
-        </view>
+    <form class='form-container' bindsubmit='onSubmit' bindreset='onReset'>
 
-        <view class='form-item'>
-          <button form-type='submit' type='primary' loading='{{btnSubloading}}'> 计算</button>
-          <button form-type='reset' type='primary'> 重置条件</button>
-        </view>
+      <view class='form-item'>
+        <label>税前工资:</label>
+        <input value='{{grossPay}}' type='number' name='grossPay' placeholder='请输入税前工资'></input>
+      </view>
+      <view class="form-container-divider-container">
+        <view class="form-container-divider" />
+      </view>
+      <view class='form-item'>
+        <label>保险费用:</label>
+        <input value='{{fee}}' type='number' name='fee' placeholder='请输入各项保险费用'></input>
+      </view>
+      <view class="form-container-divider" />
+      <view class='form-item'>
+        <label>个税起征:</label>
+        <input value='{{threshold}}' type='number' name='threshold' placeholder='请输入起征点'></input>
+      </view>
+
+      <view class='form-bottom'>
+        <button form-type='submit' type='primary' loading='{{btnSubloading}}'> 计算</button>
+        <button form-type='reset' type='primary'> 重置条件</button>
+        <button wx:if='{{showRankBtn}}' type='primary' bindtap='onToRankList'>群排行</button>
       </view>
 
 
@@ -30,24 +34,37 @@
         获取用户信息
       </button>
     </block>
-    <block wx:if="{{showResult}}">
-      <view class="result-container">
-        <view class='result-item'>
-          <label>扣税:</label>
-          <text>{{finalTax}}</text>
-        </view>
-         <view class='result-item'>
-          <label>税后收入:</label>
-          <text>{{realSalary}}</text>
-          </view>
-        <!-- <button  type='primary' open-type='share' style='margin:40rpx'>
+    <text class='result-title'>计算结果:</text>
+    <view class="result-container">
+      <view class='result-item'>
+        <label class='label'>扣税:</label>
+        <text class='data'>{{finalTax}}</text>
+        <text class='unit'>元</text>
+      </view>
+      <view class="form-container-divider-container">
+        <view class="form-container-divider" />
+      </view>
+      <view class='result-item'>
+        <label class='label'>税后收入:</label>
+        <text class='data'>{{realSalary}}</text>
+        <text class='unit'>元</text>
+      </view>
+      <view class="form-container-divider-container">
+        <view class="form-container-divider" />
+      </view>
+       <view class='result-item'>
+        <label class='result-desc'>{{resultDesc}}</label>
+      </view>
+      <!-- <button  type='primary' open-type='share' style='margin:40rpx'>
         分享出去吧，你的个税节省出一个肯德基
       </button> -->
-        <view class='result-desc'>{{resultDesc}}</view>
-        <button type='primary' open-type='share'>分享出去吧
-        </button>
-      </view>
-    </block>
+
+      <button wx:if="{{showShare}}" class="result-share-btn" type='primary' open-type='share'>分享出去吧
+      </button>
+    </view>
+
+
+
   </scroll-view>
 
 

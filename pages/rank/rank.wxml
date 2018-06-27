@@ -1,0 +1,24 @@
+<view class="container">
+  <view class='header'>
+    <open-data type='groupName' open-gid='{{groupID}}'></open-data>的排行榜
+  </view>
+  <scroll-view class='content'>
+    <view class='item' wx:for="{{rankUsers}}" wx:key="{{user.nickName}}{{index}}" wx:for-item="user">
+      <text class="index">{{index + 1}}</text>
+      <image lazy-load="true" mode='aspectFill' class="item-user-head" src="{{user.avatarUrl}}"></image>
+      <view class='item-user-content'>
+        <view>
+          <text class="item-user-name">{{user.nickName}}</text>
+          <image mode="aspectFit" class="item-user-sex-img" src='{{user.gender==1?"../../resource/icon/man.png":"../../resource/icon/girl.png"}}'/>
+        </view>
+        <view class='item-user-tax'>
+          <text class='item-user-tax-item'>个税{{user.taxData.tax}}元，</text>
+          <text class='item-user-tax-item'>到手工资{{user.taxData.realSalary}}元</text>
+        </view>
+        <view class='item-divider'/>
+      </view>
+    
+    </view>
+  </scroll-view>
+
+</view>

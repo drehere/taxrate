@@ -1,6 +1,8 @@
 //app.js
 
 const logger=require('./config/log.js')
+const server=require('./server/server.js')
+const context=require('./context/context.js')
 App({
   
   onLaunch: function(res) {
@@ -8,15 +10,19 @@ App({
     let app = this
     // 登录
     logger.console('App onLaunch',res)
+    //获取分享的shareTicket
+    app.globalData['shareTicket'] = res['shareTicket']
+    const con=new context()
+    con.launch(res)
+    app.context = con
   },
   globalData: {
     wxLoginInfo: null,
     isWxLogin: function() {
       return this.wxLoginInfo != null
     },
-    hasWxLoginInfo: function() {
-      return this.wxLoginInfo != null && this.wxLoginInfo['nickName'] != null && this.wxLoginInfo['nickName'] != ''
-    }
+   
+    shareTicket:null
   },
   onShow: function(options) {
     // Do something when show.

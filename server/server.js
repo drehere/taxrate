@@ -1,44 +1,58 @@
+const config = require('../config/config.js')
+const logger = require('../config/log.js')
+const server = {}
+server._baseurl = config.isDebug ? 'http://localhost:8089/bitmain/' : 'https://www.demon-yu.com/bitmain/'
 
-const config=require('../config/config.js')
 
-const server={}
-server._baseurl =config.isDebug?'http://localhost:8089/bitmain/':'https://www.demon-yu.com/bitmain/'
-
-
-server.login=function(obj){
-  wx.request({
-    url: this._baseurl+'login?',
-    method: 'POST',
-    header: {
-      'content-type': 'application/x-www-form-urlencoded' // 默认值
-    },
-    data: obj.data,
-    success: function(data){
-      if (data['statusCode'] == 200 && data['data']['status'] == 0){
-        obj.success(data['data']['data'])
-      }else{
-        obj.fail()
-      }
-    },
-    fail:obj.fail,
-    complete: obj.complete
-  })
+server.login = function(obj) {
+  server._request({
+    url: 'login?'
+  }, obj)
 }
-server.registerInfo=function(obj){
-  const openID = getApp().globalData['wxLoginInfo']['openID']
+server.registerInfo = function(obj) {
+  const openID = getApp().context.getLoginInfo()['openID']
+  server._request({
+    openID: openID,
+    url: 'registerUserInfo?'
+  }, obj)
+
+}
+
+server.calculate = function(obj) {
+  const openID = getApp().context.getLoginInfo()['openID']
+  server._request({
+    openID: openID,
+    url: 'calculate?'
+  }, obj)
+}
+
+server.uploadShareInfo = function(obj) {
+  const openID = getApp().context.getLoginInfo()['openID']
+  server._request({
+    openID: openID,
+    url: 'uploadShareInfo?'
+  }, obj)
+}
+
+
+server._request = function(innerData, obj) {
+  const openID = innerData["openID"]
+  var header = {
+    'content-type': 'application/x-www-form-urlencoded'
+  }
+  if (openID != null) {
+    header['openID'] = openID
+  }
   wx.request({
-    url: this._baseurl +'registerUserInfo?',
-    method:'POST',
-    header: {
-      'content-type': 'application/x-www-form-urlencoded', // 默认值
-      'openID': openID
-    },
+    url: this._baseurl + innerData['url'],
+    method: 'POST',
+    header: header,
     data: obj.data,
-    success: function (data) {
+    success: function(data) {
       if (data['statusCode'] == 200 && data['data']['status'] == 0) {
-        obj.success(data['data']['data'])
+        obj['success'] && obj['success'](data['data']['data'])
       } else {
-        obj.fail()
+        obj['fail'] && obj['fail']()
       }
     },
     fail: obj.fail,
@@ -46,26 +60,13 @@ server.registerInfo=function(obj){
   })
 }
 
-server.calculate=function(obj){
-  const openID = getApp().globalData['wxLoginInfo']['openID']
-  wx.request({
-    url: this._baseurl + 'calculate?',
-    method: 'POST',
-    header: {
-      'content-type': 'application/x-www-form-urlencoded', // 默认值
-      'openID': openID
-    },
-    data: obj.data,
-    success: function (data) {
-      if (data['statusCode'] == 200 && data['data']['status']==0) {
-        obj.success(data['data']['data'])
-      } else {
-        obj.fail()
-      }
-    },
-    fail: obj.fail,
-    complete: obj.complete
-  })
+
+server.getRankList = function(obj) {
+  const openID = getApp().context.getLoginInfo()['openID']
+  server._request({
+    openID: openID,
+    url: 'getRankList?'
+  }, obj)
 }
 
 module.exports = server

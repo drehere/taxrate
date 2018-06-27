@@ -1,0 +1,65 @@
+.header {
+  margin-top: 20rpx;
+  color: red;
+}
+
+.content {
+  padding: 20px 20rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.index {
+  text-shadow: 2px 2px 2px #f00;
+  font-size: 40px;
+  color: blueviolet;
+  margin-right: 10px;
+  margin-top: -5px;
+}
+
+.item-user-head {
+  width: 40px;
+  height: 40px;
+  background-color: #eee;
+  border-radius:50%;
+  border: 2px solid aqua;
+}
+.item-user-content{
+  margin-left: 30rpx;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.item-user-name{
+  font-size: 14px;
+  color: black;
+  overflow: hidden;
+}
+.item-user-sex-img{
+  width: 10px;
+  height: 10px;
+  margin-left: 10rpx;
+}
+.item-user-tax{
+  display: block;
+}
+.item-user-tax-item{
+  font-size: 14px;
+  color: black;
+  overflow: hidden;
+  float: left
+}
+.item-divider{
+  height: 1px;
+  width: 100%;
+  background-color: #cccccc;
+}
