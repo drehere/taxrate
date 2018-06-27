@@ -9,11 +9,9 @@ Page({
   data: {
 
     canIUseUserInfo: wx.canIUse('button.open-type.getUserInfo'),
-    hasUserInfo: false,
     wxLoginUserInfo:null,
 
     //表单mvvm数据绑定
-    btnSubloading: false,
     grossPay: 40000,
     fee: 5000,
     threshold: 5000,
@@ -25,24 +23,12 @@ Page({
     realSalary:'',
     resultDesc:'',
 
-    //排行榜数据
-    rankUsers:[]
-
   },
 
   // 计算税率
-  onSubmit: function(obj) {
-
-    
+  onSubmit: function(value) {
 
     let page = this;
-    let value = obj.detail.value;
-
-    if(value)
-
-    this.setData({
-      btnSubloading: true
-    })
     
     server.calculate({
       data:{
@@ -92,7 +78,6 @@ Page({
         iv: iv
       },
       success: (res) => {
-        this.onLoadUserInfoReady()
         let wxUserInfo = getApp().context.getLoginInfo()
         wxUserInfo['nickName'] = userInfo['nickName']
         wxUserInfo['avatarUrl'] = userInfo['avatarUrl']
@@ -107,12 +92,6 @@ Page({
       }
     })
   },
-  onLoadUserInfoReady: function (wxLoginInfo) {
-    this.setData({
-      hasUserInfo: true,
-      wxLoginUserInfo: wxLoginInfo
-    })
-  },
   /**
    * 检查是否需要获取用户详细数据
    */
@@ -120,23 +99,11 @@ Page({
     return app.context.needUploadLoginInfo()
   },
 
+
+  /**
+   * 页面初始化
+   */
   onLoad: function() {
-    if (this.checkDetailInfo()) {
-      this.onLoadUserInfoReady(app.context.getLoginInfo())
-    } else if (this.data.canIUseUserInfo) {
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.onUserInfoReady(res)
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          this.onUserInfoReady(res)
-        }
-      })
-    }
     wx.showShareMenu({
       withShareTicket:true,
       success:function(){
@@ -149,11 +116,36 @@ Page({
 
   },
   /**
-   * 授权获取用户信息回调
+   * 输入框回调
+   */
+  onBindThresholdInput:function(res){
+    this.setData({
+      threashold:res['detail']['value']
+    })
+  },
+  onBindGrossPayInput:function(res){
+    this.setData({
+      grossPay: res['detail']['value']
+    })
+  },
+
+  onBindFeeInput:function(res){
+    this.setData({
+      fee: res['detail']['value']
+    })
+  },
+
+  /**
+   * 授权获取用户信息回调函数
    */
   onUserInfoReady: function(res) {
-    logger.console(res)
-    this.uploadUserInfo(res['detail']['encryptedData'], res['detail']['iv'], res['detail'].userInfo)
+    logger.console("onUserInfoReady",res,this.data)
+
+    if (!this.checkDetailInfo() && res['detail']['userInfo'] != null) {
+      this.uploadUserInfo(res['detail']['encryptedData'], res['detail']['iv'], res['detail'].userInfo)
+    }
+
+    this.onSubmit(this.data)
   },
 
   /**
@@ -181,7 +173,7 @@ Page({
     // return custom share data when user share.
     console.info('onShareAppMessage ',options)
     return {
-      title: '个税大比拼',
+      title: '翻滚吧个税',
       path : '/pages/index/index',
       success:function(res){
         logger.console('onShareAppMessage success',res)
@@ -209,16 +201,5 @@ Page({
     console.log(item.index)
     console.log(item.pagePath)
     console.log(item.text)
-  },
-  // Event handler.
-  viewTap: function() {
-    this.setData({
-      text: 'Set some data for updating view.'
-    }, function() {
-      // this is setData callback
-    })
-  },
-  customData: {
-    hi: 'MINA'
   }
 })

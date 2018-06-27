@@ -35,9 +35,14 @@
   margin-right: 30rpx;
   font-size: 14px;
   color: #333;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: initial;
 }
 
 .form-container view input {
+  order: 1;
   border: 0px solid #fff;
   flex-shrink: 1;
   font-size: 14px;
@@ -87,7 +92,7 @@
 
 /*result css*/
 
-.result-title{
+.result-title {
   color: #a6a6a6;
   line-height: 100rpx;
   height: 100rpx;
@@ -101,7 +106,7 @@
 }
 
 .result-item {
- flex-direction: row;
+  flex-direction: row;
   display: flex;
   background: #fff;
   height: 90rpx;
@@ -114,8 +119,8 @@
 }
 
 .result-item .label {
- flex-flow: 0;
- font-size: 15px;
+  flex-flow: 0;
+  font-size: 15px;
 }
 
 .result-item .data {
@@ -124,17 +129,22 @@
   font-size: 15px;
   color: #717171;
 }
-.result-item .unit{
+
+.result-item .unit {
   flex-flow: 0;
   font-size: 15px;
 }
-.result-item .result-desc{
+
+.result-item .result-desc {
   font-size: 15px;
   color: #717171;
 }
 
-.result-share-btn{
+.result-share-btn {
   margin: 40rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 12px;
+  text-align: center;
+  flex: auto;
 }
-
-

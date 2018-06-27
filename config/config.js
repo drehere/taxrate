@@ -1,3 +1,3 @@
 const config={}
-config.isDebug=true
+config.isDebug=false
 module.exports=config

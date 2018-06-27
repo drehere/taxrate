@@ -82,6 +82,7 @@ Page({
     wx.checkSession({
       success: () => {
         let wxLoginInfo = getApp().context.getLoginInfo()
+        logger.console("onLoad checkSession success", wxLoginInfo)
         if (wxLoginInfo == null) {
           this.login()
         } else {
@@ -90,6 +91,7 @@ Page({
       },
       fail: () => {
         this.login()
+        logger.console("onLoad checkSession fail")
       }
     })
   },
@@ -99,7 +101,7 @@ Page({
    */
   onReady: function() {
     wx.showLoading({
-      title: '登陆中，请稍后',
+      title: '登陆中...',
     })
   },
 
