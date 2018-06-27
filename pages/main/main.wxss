@@ -39,6 +39,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: initial;
+  width: 150rpx;
 }
 
 .form-container view input {
