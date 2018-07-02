@@ -25,9 +25,9 @@
       <view class='form-bottom'>
         <button  type='primary'
           open-type='getUserInfo' bindgetuserinfo='onUserInfoReady'
-        > 计算</button>
-        <button form-type='reset' type='primary'> 重置条件</button>
-        <button wx:if='{{showRankBtn}}' type='primary' bindtap='onToRankList'>群排行</button>
+        >计算结果</button>
+        <button form-type='reset' type='primary'>重置条件</button>
+        <button wx:if='{{showRankBtn}}' type='primary' bindtap='onToRankList'>群中排行</button>
       </view>
     </form>
     <!-- <block wx:if="{{canIUseUserInfo}}">

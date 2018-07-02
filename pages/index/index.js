@@ -53,7 +53,7 @@ Page({
             },
             complete: function() {
               wx.hideLoading()
-              wx.switchTab({
+              wx.redirectTo({
                 url: '../main/main',
               })
             }
@@ -61,14 +61,14 @@ Page({
         },
         fail: function() {
           wx.hideLoading()
-          wx.switchTab({
+          wx.redirectTo({
             url: '../main/main',
           })
         }
       })
     }else{
       wx.hideLoading()
-      wx.switchTab({
+      wx.redirectTo({
         url: '../main/main',
       })
     }

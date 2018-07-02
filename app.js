@@ -6,27 +6,23 @@ const context=require('./context/context.js')
 App({
   
   onLaunch: function(res) {
-    // 展示本地存储能力
-    let app = this
-    // 登录
-    logger.console('App onLaunch',res)
-    //获取分享的shareTicket
-    app.globalData['shareTicket'] = res['shareTicket']
-    const con=new context()
-    con.launch(res)
-    app.context = con
+   
+ 
   },
   globalData: {
     wxLoginInfo: null,
     isWxLogin: function() {
       return this.wxLoginInfo != null
     },
-   
-    shareTicket:null
   },
   onShow: function(options) {
     // Do something when show.
-    console.log("onshow")
+    logger.console("onshow",options)
+    //获取分享的shareTicket
+    let app=this;
+    const con = new context()
+    con.launch(options)
+    app.context = con
   },
   onHide: function() {
     // Do something when hide.

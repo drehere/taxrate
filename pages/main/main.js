@@ -175,6 +175,7 @@ Page({
     return {
       title: '翻滚吧个税',
       path : '/pages/index/index',
+      imageUrl:'../../resource/share_bg.png',
       success:function(res){
         logger.console('onShareAppMessage success',res)
         if (res['shareTickets'] != null && res['shareTickets'].length>0){

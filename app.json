@@ -1,7 +1,6 @@
 {
   "pages":[
     "pages/index/index",
-    "pages/logs/logs",
     "pages/main/main",
     "pages/rank/rank"
   ],
@@ -15,25 +14,5 @@
   "networkTimeout": {
     "request": 10000,
     "downloadFile": 10000
-  },
-  "tabBar": {
-    "borderStyle": "black",
-    "selectedColor": "#4183c4",
-    "color": "#ffffff",
-    "backgroundColor": "#000000",
-    "list": [
-      {
-        "pagePath": "pages/main/main",
-        "text": "首页",
-        "iconPath": "./resource/icon/cal.png",
-        "selectedIconPath":"./resource/icon/cal_selected.png"
-      },
-      {
-        "pagePath": "pages/logs/logs",
-        "text": "日志",
-        "iconPath": "./resource/icon/log.png",
-        "selectedIconPath": "./resource/icon/log_selected.png"
-      }
-    ]
   }
 }
