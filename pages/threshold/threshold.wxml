@@ -1,0 +1,19 @@
+<!--pages/threshold/threshold.wxml-->
+<view class='container list-container'>
+  <view class='list-item'>
+    <view class='list-item-label list-item-head'>个税起征点</view>
+  </view>
+  <view class="list-container-divider-container">
+        <view class="list-container-divider" />
+      </view>
+  <view class='info'>
+    <view>个人所得税是对个人（自然人）取得的各项所得征收的一种所得税。个人所得税起征点是指国家为了完善税收体制，更好的进行税制改革，而制定的税收制度。</view>
+    <text>\n</text>
+    <view>2011年4月20日，十一届全国人大常委会第二十次会议召开，个人所得税免征额拟调至3500元。2011年6月中旬，调查显示，48%的网民要求修改个税起征点。2011年6月30号十一届全国人大常委会第二十一次会议通过了关于修改《个人所得税法》的决定，并于2011年9月1日起施行。</view>
+   <rich-text type='node' nodes="{{nodes}}"></rich-text>
+    <view>2018年6月，全国人大常委会审议和发布个人所得税法修正案草案，草案提出：个税起征点由每月3500元提高至每月5000元(每年6万元)。此系个税法自1980年出台以来第七次大修，包括起征点在内，本次个税法修改拟作部分劳动性所得综合征税、增加专项附加扣除等六大修改</view>
+  </view>
+  <view class='boot-info'> 
+    本程序计算仅供参考，不得非法实用
+  </view>
+</view>

@@ -1,0 +1,15 @@
+/* pages/calculation/calculation.wxss */
+.info{
+  overflow-wrap: break-word;
+  overflow-x: visible;
+  padding-left: 40rpx;
+  padding-right: 40rpx;
+  background-color: #fff;
+}
+.info view{
+  color: black;
+  font-size: 13px;
+  line-height: 60rpx;
+  height: 60rpx;
+  text-align: left;
+}

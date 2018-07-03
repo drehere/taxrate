@@ -1,0 +1,17 @@
+<!--pages/calculation/calculation.wxml-->
+<view class='container list-container'>
+  <view class='list-item'>
+    <view class='list-item-label list-item-head'>个人所得谁计算公式</view>
+  </view>
+  <view class="list-container-divider-container">
+        <view class="list-container-divider" />
+      </view>
+  <view class='info'>
+    <view>应纳税所得额=工资收入金额 - 五险一金 - 起征点\n</view>
+    <view>应纳个税额=应纳税所得额×适用税率-速算扣除数\n</view>
+    <view>说明：起征点，适用税率随着新版个税方案会更改</view>
+  </view>
+  <view class='boot-info'> 
+    本程序计算仅供参考，不得非法实用
+  </view>
+</view>

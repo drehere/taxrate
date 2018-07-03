@@ -1,0 +1,75 @@
+<!--pages/threshold/threshold.wxml-->
+<view class='container list-container'>
+  <view class='list-item'>
+    <view class='list-item-label list-item-head'>个人所得税税率表新版和旧版</view>
+  </view>
+  <view class="list-container-divider-container">
+    <view class="list-container-divider" />
+  </view>
+  <view class='info'>
+    <view class='info-title' style='margin-top:0'>新版税率表</view>
+    <view class='info-desc'>
+      根据2018年6月全国人大关于个税税率表草案，工资、薪金所得适用3%-45%的七级超额累进税率
+    </view>
+    <scroll-view scroll-x='true' class='table-view'>
+      <view class='table'>
+        <block wx:for="{{taxTable}}" wx:for-item="item">
+          <view class='table-row'>
+            <view class='table-cell'>
+              <text class='table-text'>{{item[0]}}</text>
+            </view>
+            <view class='table-cell'>
+              <text class='table-text'>{{item[1]}}</text>
+            </view>
+            <view class='table-cell'>
+              <text class='table-text'>{{item[2]}}</text>
+            </view>
+            <view class='table-cell'>
+              <text class='table-text'>{{item[3]}}</text>
+            </view>
+          </view>
+
+        </block>
+
+
+      </view>
+    </scroll-view>
+    <view class='info-desc' style='color:#a8a8a8;font-size:10px;'>
+      修正案草案明确，居民个人的综合所得，以每一纳税年度的收入额减除费用6万元，以及专项扣除、专项附加扣除和依法确定的其他扣除后的余额，为应纳税所得额。其中，“专项扣除”包括居民个人按照国家规定的范围和标准缴纳的基本养老保险、基本医疗保险、失业保险等社会保险费和住房公积金等。“专项附加扣除”则包括子女教育、继续教育、大病医疗、住房贷款利息和住房租金等支出。
+    </view>
+
+    <view class='info-title'>旧版税率表</view>
+    <view class='info-desc'>
+      2011年9月1日起调整后，也就是2012年实行的7级超额累进个人所得税税率表。
+    </view>
+    <scroll-view scroll-x='true' class='table-view'>
+      <view class='table'>
+        <block wx:for="{{oldTaxTable}}" wx:for-item="item">
+          <view class='table-row'>
+            <view class='table-cell'>
+              <text class='table-text'>{{item[0]}}</text>
+            </view>
+            <view class='table-cell'>
+              <text class='table-text'>{{item[1]}}</text>
+            </view>
+            <view class='table-cell'>
+              <text class='table-text'>{{item[2]}}</text>
+            </view>
+            <view class='table-cell'>
+              <text class='table-text'>{{item[3]}}</text>
+            </view>
+            <view class='table-cell'>
+              <text class='table-text'>{{item[4]}}</text>
+            </view>
+          </view>
+        </block>
+
+
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class='bottom-tip'>
+    本程序仅供参考，不得非法使用
+  </view>
+</view>

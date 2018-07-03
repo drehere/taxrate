@@ -1,0 +1,13 @@
+/* pages/threshold/threshold.wxss */
+.info{
+  overflow-wrap: break-word;
+  overflow-x: visible;
+  padding: 40rpx;
+  background-color: #fff;
+
+}
+.info view{
+  color: black;
+  font-size: 12px;
+  text-align: left;
+}

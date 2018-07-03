@@ -1,0 +1,65 @@
+/* pages/taxtable/taxtable.wxss */
+
+.info {
+  overflow-wrap: break-word;
+  overflow-x: visible;
+  padding: 40rpx;
+  background-color: #fff;
+}
+
+
+.info-title{
+  color: black;
+  font-size: 16px;
+  text-align: left;
+  margin-top: 40rpx;
+}
+
+.info-desc{
+  color: black;
+  font-size: 12px;
+  text-align: left;
+  margin-top: 40rpx;
+}
+
+
+
+
+/*table*/
+.table-view{
+  margin-top: 40rpx;
+}
+
+
+.table {
+  display: table;
+  border: 2px solid #f4f4f4;
+  background-color: #fff;
+}
+
+.table-head-row, .table-row {
+  display: table-row;
+}
+
+.table-head-cell, .table-cell {
+  display: table-cell;
+  border-bottom: 1px solid #f4f4f4;
+  border-right: 1px solid #f4f4f4;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  min-width: 100rpx;
+  text-align: center;
+  vertical-align: middle;
+  margin: 0 auto;
+  padding-left: 8px;
+  padding-right: 8px;
+  overflow: visible;
+}
+
+.table-text{
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+  font-size: 12px;
+  white-space:nowrap;
+}
