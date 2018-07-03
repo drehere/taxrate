@@ -1,84 +1,96 @@
 <!--main.wxml-->
-<view class="container">
-
-  <scroll-view class='scroll-container' scroll-y="true">
-    <form class='form-container' bindsubmit='onSubmit' bindreset='onReset'>
-
-      <view class='form-item'>
-        <label>税前工资:</label>
-        <input value='{{grossPay}}' bindinput='onBindGrossPayInput' type='number' name='grossPay' placeholder='请输入税前工资'></input>
+<view class="container scroll-container ">
+  <form class='form-container' bindsubmit='onSubmit' bindreset='onReset'>
+    <view class='form-item'>
+      <label>税前工资:</label>
+      <input value='{{grossPay}}' bindinput='onBindGrossPayInput' type='number' name='grossPay' placeholder='请输入税前工资'></input>
+    </view>
+    <view class="list-container-divider-container">
+      <view class="list-container-divider" />
+    </view>
+    <view class='form-item'>
+      <label>保险费用:</label>
+      <input value='{{fee}}' type='number' bindinput='onBindFeeInput' name='fee' placeholder='请输入各项保险费用'></input>
+    </view>
+    <view class="list-container-divider-container">
+      <view class="list-container-divider" />
+    </view>
+    <view class='form-item'>
+      <label>个税起征:</label>
+      <picker range='{{thresholds}}' value="{{thresholdsIndex}}" bindchange="onThresholdChnage">
+        <view>
+          {{thresholds[thresholdsIndex]}}
+        </view>
+      </picker>
+      <image src='../../resource/icon/down_arrow.png' mode='widthFix' />
+    </view>
+     <view class="list-container-divider-container">
+      <view class="list-container-divider" />
+    </view>
+    <view class='form-item'>
+      <label>{{taxRateTable[thresholdsIndex].desc}}</label>
+    </view>
+    <view class='form-bottom'>
+      <button type='primary' open-type='getUserInfo' bindgetuserinfo='onUserInfoReady'>计算结果</button>
+      <button form-type='reset' type='primary'>重置条件</button>
+      <button wx:if='{{showRankBtn}}' type='primary' bindtap='onToRankList'>群中排行</button>
+    </view>
+  </form>
+  <text class='list-item-title'>计算结果:</text>
+  <view class="list-container">
+    <view class='list-item'>
+      <label class='list-item-label'>扣税:</label>
+      <text class='list-item-left result-value'>{{finalTax}}</text>
+      <text class='list-item-right list-item-label'>元</text>
+    </view>
+    <view class="list-container-divider-container">
+      <view class="list-container-divider" />
+    </view>
+    <view class='list-item'>
+      <label class='list-item-label'>税后收入:</label>
+      <text class='list-item-left result-value'>{{realSalary}}</text>
+      <text class='list-item-right list-item-label'>元</text>
+    </view>
+    <block wx:if="{{resultDesc}}">
+      <view class="list-container-divider-container">
+        <view class="list-container-divider" />
       </view>
-      <view class="form-container-divider-container">
-        <view class="form-container-divider" />
+      <view class='list-item-large'>
+        <label class='list-item-label'>{{resultDesc}}</label>
       </view>
-      <view class='form-item'>
-        <label>保险费用:</label>
-        <input value='{{fee}}' type='number' bindinput='onBindFeeInput' name='fee' placeholder='请输入各项保险费用'></input>
-      </view>
-      <view class="form-container-divider-container">
-        <view class="form-container-divider" />
-      </view>
-      <view class='form-item'>
-        <label>个税起征:</label>
-        <input value='{{threshold}}' type='number' bindinput='onBindThresholdInput'  name='threshold' placeholder='请输入起征点'></input>
-      </view>
-      <view class='form-bottom'>
-        <button  type='primary'
-          open-type='getUserInfo' bindgetuserinfo='onUserInfoReady'
-        >计算结果</button>
-        <button form-type='reset' type='primary'>重置条件</button>
-        <button wx:if='{{showRankBtn}}' type='primary' bindtap='onToRankList'>群中排行</button>
-      </view>
-    </form>
-    <!-- <block wx:if="{{canIUseUserInfo}}">
-      <button wx:if='{{!hasUserInfo}}' type='primary' open-type='getUserInfo' style='margin:40rpx' bindgetuserinfo='onUserInfoReady'>
-        获取用户信息
-      </button>
-    </block> -->
-    <text class='result-title'>计算结果:</text>
-    <view class="result-container">
-      <view class='result-item'>
-        <label class='label'>扣税:</label>
-        <text class='data'>{{finalTax}}</text>
-        <text class='unit'>元</text>
-      </view>
-      <view class="form-container-divider-container">
-        <view class="form-container-divider" />
-      </view>
-      <view class='result-item'>
-        <label class='label'>税后收入:</label>
-        <text class='data'>{{realSalary}}</text>
-        <text class='unit'>元</text>
-      </view>
-      <view class="form-container-divider-container">
-        <view class="form-container-divider" />
-      </view>
-       <view class='result-item'>
-        <label class='result-desc'>{{resultDesc}}</label>
-      </view>
-      <!-- <button  type='primary' open-type='share' style='margin:40rpx'>
+    </block>
+    <!-- <button  type='primary' open-type='share' style='margin:40rpx'>
         分享出去吧，你的个税节省出一个肯德基
       </button> -->
 
-      <button wx:if="{{showShare}}" class="result-share-btn" type='primary' open-type='share'>分享出去吧
-      </button>
+    <button wx:if="{{showShare}}" class="result-share-btn" type='primary' open-type='share'>分享出去吧
+    </button>
+  </view>
+
+  <!--相关说明部分-->
+  <text class='list-item-title'>相关说明:</text>
+  <view class='list-container'>
+    <view class='list-item'>
+      <label class='list-item-left list-item-label' bindtap='toCalculationPage'>个人所得税计算方式</label>
+      <image class='image-icon list-item-right' mode='widthFix' src='../../resource/icon/right_arrow.png'></image>
     </view>
-
-
-
-  </scroll-view>
-
-
-  <!--
-  <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
+    <view class="list-container-divider-container">
+      <view class="list-container-divider" />
+    </view>
+    <view class='list-item'>
+      <label class='list-item-left list-item-label' bindtap='toThresholdPage'>个税起征点</label>
+      <image class='image-icon list-item-right' mode='widthFix' src='../../resource/icon/right_arrow.png'></image>
+    </view>
+    <view class="list-container-divider-container">
+      <view class="list-container-divider" />
+    </view>
+    <view class='list-item'>
+      <label class='list-item-left list-item-label' bindtap='toTaxtablePage'>个人所得税税率表</label>
+      <image class='image-icon list-item-right' mode='widthFix' src='../../resource/icon/right_arrow.png'></image>
+    </view>
   </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
+  <view class='bottom-tip'>
+    本程序仅供参考，不得非法使用
   </view>
-  -->
+
 </view>

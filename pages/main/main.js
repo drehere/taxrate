@@ -3,54 +3,63 @@
 const app = getApp()
 const server = require('../../server/server.js')
 const config = require('../../config/config.js')
-const logger=require('../../config/log.js')
+const logger = require('../../config/log.js')
 
 Page({
   data: {
 
     canIUseUserInfo: wx.canIUse('button.open-type.getUserInfo'),
-    wxLoginUserInfo:null,
+    wxLoginUserInfo: null,
 
     //表单mvvm数据绑定
     grossPay: 40000,
     fee: 5000,
-    threshold: 5000,
+    // threshold: 5000,
     showRankBtn: getApp().context.isFromGroupWithShareTicket(),
-
+    thresholds: [3500, 5000],
+    thresholdsIndex: 0,
+    //税率表
+    taxRateTable: [{
+      mode: 3500,
+      desc: "采用旧版税率表,详细请查看相关说明。"
+    }, {
+      mode: 5000,
+      desc: "采用2018年新版税率表，详细请查看相关说明。"
+    }],
     //计算结果数据绑定
     showShare: false,
-    finalTax:'',
-    realSalary:'',
-    resultDesc:'',
-
+    finalTax: '',
+    realSalary: '',
+    resultDesc: '',
   },
 
   // 计算税率
   onSubmit: function(value) {
 
     let page = this;
-    
+
     server.calculate({
-      data:{
+      data: {
         grossPay: value['grossPay'],
         fee: value['fee'],
-        threshold: value['threshold']
+        // threshold: value['threshold']
+        threshold: page.data.thresholds[page.data.thresholdsIndex]
       },
-      success:(res)=>{
+      success: (res) => {
         this.setData({
           showShare: true,
-          finalTax:res['tax'],
+          finalTax: res['tax'],
           realSalary: res['realSalary'],
           resultDesc: res['resultDesc']
         })
-        logger.console('calculate success ',res)
+        logger.console('calculate success ', res)
       },
-      complete:()=>{
+      complete: () => {
         this.setData({
           btnSubloading: false
         })
       }
-  
+
     })
   },
   onReset: function() {
@@ -60,18 +69,38 @@ Page({
       threshold: 5000
     })
   },
-  
 
-  onToRankList:function(){
-    wx.navigateTo({
-      url:'../rank/rank'
+  onThresholdChnage: function(event) {
+    this.setData({
+      thresholdsIndex: event.detail.value
     })
   },
-  
+  onToRankList: function() {
+    wx.navigateTo({
+      url: '../rank/rank'
+    })
+  },
+
+  toCalculationPage: function() {
+    wx.navigateTo({
+      url: '../calculation/calculation',
+    })
+  },
+  toThresholdPage: function() {
+    wx.navigateTo({
+      url: '../threshold/threshold',
+    })
+  },
+  toTaxtablePage: function() {
+    wx.navigateTo({
+      url: '../taxtable/taxtable',
+    })
+  },
+
   /**
    * 上传微信用户详细数据
    */
-  uploadUserInfo: function(encryptedData, iv,userInfo) {
+  uploadUserInfo: function(encryptedData, iv, userInfo) {
     server.registerInfo({
       data: {
         encryptedData: encryptedData,
@@ -105,11 +134,11 @@ Page({
    */
   onLoad: function() {
     wx.showShareMenu({
-      withShareTicket:true,
-      success:function(){
+      withShareTicket: true,
+      success: function() {
         console.info("showShareMenu success ")
       },
-      complete:function(){
+      complete: function() {
         console.info("showShareMenu complete ")
       }
     })
@@ -118,18 +147,13 @@ Page({
   /**
    * 输入框回调
    */
-  onBindThresholdInput:function(res){
-    this.setData({
-      threashold:res['detail']['value']
-    })
-  },
-  onBindGrossPayInput:function(res){
+  onBindGrossPayInput: function(res) {
     this.setData({
       grossPay: res['detail']['value']
     })
   },
 
-  onBindFeeInput:function(res){
+  onBindFeeInput: function(res) {
     this.setData({
       fee: res['detail']['value']
     })
@@ -139,7 +163,7 @@ Page({
    * 授权获取用户信息回调函数
    */
   onUserInfoReady: function(res) {
-    logger.console("onUserInfoReady",res,this.data)
+    logger.console("onUserInfoReady", res, this.data)
 
     if (!this.checkDetailInfo() && res['detail']['userInfo'] != null) {
       this.uploadUserInfo(res['detail']['encryptedData'], res['detail']['iv'], res['detail'].userInfo)
@@ -169,21 +193,21 @@ Page({
   onReachBottom: function() {
     // Do something when page reach bottom.
   },
-  onShareAppMessage: function (options) {
+  onShareAppMessage: function(options) {
     // return custom share data when user share.
-    console.info('onShareAppMessage ',options)
+    console.info('onShareAppMessage ', options)
     return {
       title: '翻滚吧个税',
-      path : '/pages/index/index',
-      imageUrl:'../../resource/share_bg.png',
-      success:function(res){
-        logger.console('onShareAppMessage success',res)
-        if (res['shareTickets'] != null && res['shareTickets'].length>0){
+      path: '/pages/index/index',
+      imageUrl: '../../resource/share_bg.png',
+      success: function(res) {
+        logger.console('onShareAppMessage success', res)
+        if (res['shareTickets'] != null && res['shareTickets'].length > 0) {
           let ticket = res['shareTickets'][0]
           wx.getShareInfo({
             shareTicket: ticket,
-            success:function(res){
-              logger.console("getShareInfo success",res)
+            success: function(res) {
+              logger.console("getShareInfo success", res)
               getApp().context.uploadShareInfo(res)
             }
           })
@@ -192,7 +216,7 @@ Page({
     }
   },
 
-  
+
 
 
   onPageScroll: function() {

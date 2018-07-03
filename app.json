@@ -1,15 +1,18 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
     "pages/main/main",
-    "pages/rank/rank"
+    "pages/rank/rank",
+    "pages/calculation/calculation",
+    "pages/threshold/threshold",
+    "pages/taxtable/taxtable"
   ],
-  "window":{
+  "window": {
     "backgroundColor": "#fff",
-    "backgroundTextStyle":"light",
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#000",
     "navigationBarTitleText": "翻滚吧税率",
-    "navigationBarTextStyle":"white"
+    "navigationBarTextStyle": "white"
   },
   "networkTimeout": {
     "request": 10000,
